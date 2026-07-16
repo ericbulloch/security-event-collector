@@ -8,6 +8,11 @@ and forwards them to its ingestion API.
 When the correlator API is unreachable, events are buffered locally in a SQLite
 database and flushed automatically once the API comes back online.
 
+This repository is a learning-focused project created to explore the real-world
+challenges of security log collection and normalization. Its purpose is to better
+understand the complexities of ingesting logs from multiple sources, parsing them
+into structured events, and producing data that can be analyzed, studied, and investigated.
+
 ---
 
 ## How it works
@@ -221,3 +226,9 @@ Register-ScheduledTask -TaskName "SecurityEventCollector" -Action $action -Trigg
 1. Create `src/parsers/my_log.py` extending `BaseParser` with a `parse(line) -> Optional[dict]` method.
 2. In `src/collector.py`, import your parser and append a `FileTailer` to `self.tailers` in the appropriate setup method.
 3. Add the log path to `src/config.py` and `.env.example`.
+
+## Roadmap
+
+1. Add syslog receiver since most network devices (firewalls, switches, routers) speak syslog over UDP/TCP 514 instead of file-based logs.
+2. Add ability to collect logs from API (AWS CloudTrail, Azure Activity Logs, Okta, Office 365, Crowdstrike, SentinelOne, Defender).
+3. Collector health monitoring sent to [security-event-correlator](https://github.com/ericbulloch/security-event-correlator) so users can be alerted when this collector goes silent.
