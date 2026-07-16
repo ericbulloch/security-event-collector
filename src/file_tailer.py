@@ -55,7 +55,10 @@ class FileTailer:
         try:
             with open(self.filepath, "r", encoding="utf-8", errors="replace") as fh:
                 fh.seek(saved_offset)
-                for raw_line in fh:
+                while True:
+                    raw_line = fh.readline()
+                    if raw_line == '':
+                        break
                     new_offset = fh.tell()
                     line = raw_line.rstrip("\n").rstrip("\r")
                     if not line:
